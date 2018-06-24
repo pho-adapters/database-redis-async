@@ -1,7 +1,7 @@
 {
-  "name": "pho-adapters/database-redis",
+  "name": "pho-adapters/database-redis-async",
   "type": "library",
-  "description": "A simple synchronous Redis database adapter for the Phở stack.",
+  "description": "Asynchronous Redis database adapter for the Phở stack.",
   "homepage": "https://phonetworks.org",
   "license": "MIT",
   "authors": [
