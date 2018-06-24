@@ -69,8 +69,8 @@ class Redis implements DatabaseInterface, ServiceInterface {
 
   private static function urlCleanup(string $uri): string
   {
-    //if(substr($uri,0, strlen("redis"))==="redis")
-    //  return "tcp".substr($uri, strlen("redis"));
+    if(substr($uri,0, strlen("tcp"))==="tcp")
+      return "redis".substr($uri, strlen("tcp"));
     return $uri;
   }
 
