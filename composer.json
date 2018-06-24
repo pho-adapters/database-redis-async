@@ -13,7 +13,7 @@
     ],
     "require": {
         "php":"^7.1",
-	"predis/predis-async": "^0.2.3"
+	    "clue/redis-react": "^2.2.0"
     },
     "provide": {
         "phonetworks/service-storage-implementation": "1.0"
