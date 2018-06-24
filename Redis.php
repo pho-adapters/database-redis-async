@@ -54,6 +54,10 @@ class Redis implements DatabaseInterface, ServiceInterface {
   public function __construct(Kernel $kernel, string $uri = "") {
     $this->kernel = $kernel;
     $factory = new Factory($this->kernel->loop);
+    $this->kernel->logger()->info(
+      "Creating a Redis connection with the URI: %s", 
+      $uri
+    );
     $this->client_promise = $factory->createClient(self::urlCleanup($uri)); // returns a promise
     $this->client_promise->otherwise( function (\Exception $e) {
         $this->kernel->logger()->warning(
