@@ -17,11 +17,9 @@ use Pho\Kernel\Services\ServiceInterface;
 use Pho\Kernel\Services\Database\DatabaseInterface;
 use Pho\Kernel\Services\Database\DatabaseListInterface;
 use Pho\Kernel\Services\Exceptions\MissingAdapterExtensionException;
-use Clue\React\Redis\Factory;
-use Clue\React\Redis\Client;
 
 /**
- * Redis adapter as a database.
+ * Async Redis adapter as a database.
  *
  * This is the default database of Pho. Works with Predis
  * (https://github.com/nrk/predis)
@@ -40,9 +38,9 @@ class Redis implements DatabaseInterface, ServiceInterface {
    private $kernel;
 
   /**
-   * @var  \React\Promise\PromiseInterface
+   * @var  \Swoole\Async\RedisClient
    */
-  private $client_promise;
+  private $client;
 
   /**
    * Stores a list of RedisList objects.
@@ -53,18 +51,7 @@ class Redis implements DatabaseInterface, ServiceInterface {
 
   public function __construct(Kernel $kernel, string $uri = "") {
     $this->kernel = $kernel;
-    $factory = new Factory($this->kernel->loop);
-    $this->kernel->logger()->info(
-      "Creating a Redis connection with the URI: %s", 
-      $uri
-    );
-    $this->client_promise = $factory->createClient(self::urlCleanup($uri)); // returns a promise
-    $this->client_promise->otherwise( function (\Exception $e) {
-        $this->kernel->logger()->warning(
-          "There was an exception connecting with the async Redis client: %s", 
-          $e->getMessage()
-        );
-    });
+    $this->client = new \Swoole\Async\RedisClient(self::urlCleanup($uri));
   }
 
   private static function urlCleanup(string $uri): string

@@ -4,6 +4,8 @@
   "description": "Asynchronous Redis database adapter for the Phở stack.",
   "homepage": "https://phonetworks.org",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
         {
             "name": "Emre Sokullu",
@@ -13,7 +15,8 @@
     ],
     "require": {
         "php":"^7.1",
-	    "clue/redis-react": "^2.2.0"
+        "ext-swoole": "^4.0.1",
+        "esokullu/redis-async": "dev-master"
     },
     "provide": {
         "phonetworks/service-storage-implementation": "1.0"
