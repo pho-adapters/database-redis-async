@@ -54,13 +54,20 @@ class Redis implements DatabaseInterface, ServiceInterface {
   public function __construct(Kernel $kernel, string $uri = "") {
     $this->kernel = $kernel;
     $factory = new Factory($this->kernel->loop);
-    $this->client_promise = $factory->createClient($uri); // returns a promise
+    $this->client_promise = $factory->createClient(self::urlCleanup($uri)); // returns a promise
     $this->client_promise->otherwise( function (\Exception $e) {
         $this->kernel->logger()->warning(
           "There was an exception connecting with the async Redis client: %s", 
           $e->getMessage()
         );
     });
+  }
+
+  private static function urlCleanup(string $uri): string
+  {
+    if(substr($uri,0, strlen("redis"))==="redis")
+      return "tcp".substr($uri, strlen("redis"));
+    return $uri;
   }
 
   // async
